@@ -142,6 +142,27 @@ function doPost(e) {
             replyTo: "team.scode360@gmail.com"
         });
 
+        // 5. Send Lead Details to Admin (Satheesh)
+        var adminEmail = "satheeshkumarfine@gmail.com";
+        var adminSubject = "New Lead: " + name + " - " + (service || "General Inquiry");
+        var adminHtmlBody = `
+            <h3>New Lead Received on ScoDe360</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Service:</strong> ${service}</p>
+            <p><strong>Message:</strong><br>${message}</p>
+            <hr>
+            <p><small>Received on: ${timestamp}</small></p>
+        `;
+
+        MailApp.sendEmail({
+            to: adminEmail,
+            subject: adminSubject,
+            htmlBody: adminHtmlBody,
+            body: "New Lead:\nName: " + name + "\nEmail: " + email + "\nPhone: " + phone + "\nService: " + service + "\nMessage: " + message
+        });
+
         // 5. Return Success Response
         return ContentService
             .createTextOutput(JSON.stringify({ "result": "success" }))

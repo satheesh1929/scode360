@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to ScoDe360 Instagram...</title>
+    <!-- Prevent search engine indexing of this utility page -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#4f46e5">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        .text {
+            color: #a0a0a0;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>
+        // CONFIGURATION
+        const INSTAGRAM_URL = "https://www.instagram.com/scode360_/";
+
+        function redirect() {
+            // Method: location.replace()
+            // This replaces the current history entry, so hitting "Back" from Instagram 
+            // won't land the user back on this redirect page (creating a loop).
+            // Script-initiated navigation usually bypasses App Links/Universal Links
+            // because those require a direct user gesture (click) on the specific domain.
+
+            try {
+                // Double fallback mechanism
+
+                // 1. Brief internal delay to ensure the browser strictly controls the navigation
+                setTimeout(() => {
+                    window.location.replace(INSTAGRAM_URL);
+                }, 500);
+
+                // 2. Fallback link in case JS fails or takes too long (visible in body)
+                document.getElementById('manual-link').href = INSTAGRAM_URL;
+
+            } catch (e) {
+                window.location.href = INSTAGRAM_URL;
+            }
+        }
+
+        window.onload = redirect;
+    </script>
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div class="text">Opening Instagram...</div>
+    <br>
+    <a id="manual-link" href="#" style="color: #6366f1; font-size: 12px; text-decoration: none;">Click here if not
+        redirected</a>
+</body>
+
+</html>

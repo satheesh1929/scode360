@@ -479,6 +479,9 @@
         }
 
         .project-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
             background: rgba(99, 102, 241, 0.05);
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: 1rem;
@@ -1227,6 +1230,12 @@
            ========================================= */
         /* ... previous CSS ... */
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ... previous CSS ... */
+
         /* =========================================
            MOBILE MENU STYLES
            ========================================= */
@@ -1238,6 +1247,15 @@
             height: 21px;
             cursor: pointer;
             z-index: 1002;
+            background: transparent;
+            border: none;
+            padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            /* Increase hit area */
+            box-sizing: content-box;
+            padding: 10px;
+            margin-right: -10px;
         }
 
         /* ... (bars) ... */
@@ -1459,16 +1477,17 @@
             <li><a href="#resources">Resources</a></li>
             <li><a href="#contact">Contact</a></li>
         </nav>
-        <button class="cta-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Get
-            Started</button>
+        <a href="#contact" class="cta-button">Get Started</a>
 
         <!-- Mobile Menu Button -->
-        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu(event)">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
     </header>
+
+
 
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav" id="mobile-nav">
@@ -1498,9 +1517,7 @@
                     We've helped 2 startups launch their digital presence successfully.
                 </p>
                 <div class="button-group">
-                    <button class="btn-primary"
-                        onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Get a Free
-                        Quote</button>
+                    <a href="#contact" class="btn-primary">Get a Free Quote</a>
                     <a href="#portfolio" class="btn-secondary">View Our Work</a>
                 </div>
             </div>
@@ -1559,7 +1576,7 @@
             <p class="section-subtitle reveal">Showcase of successful projects we've delivered for startups</p>
             <div class="portfolio-grid stagger-parent">
                 <!-- Project 1 -->
-                <div class="project-card" onclick="window.open('https://mugavarithazhai.in', '_blank')">
+                <a href="https://mugavarithazhai.in" target="_blank" class="project-card">
                     <img src="assets/mugavarithazhai.png" alt="Mugavari Thazhai Web Development Project"
                         class="project-image" style="object-fit: cover;">
                     <div class="project-info">
@@ -1568,9 +1585,9 @@
                         <p class="project-description">Official website for Mugavari Thazhai, a professional platform
                             for their services.</p>
                     </div>
-                </div>
+                </a>
                 <!-- Project 2 -->
-                <div class="project-card" onclick="window.open('https://srcinematicstudio.in', '_blank')">
+                <a href="https://srcinematicstudio.in" target="_blank" class="project-card">
                     <img src="assets/srcinematicstudio.png" alt="SR Cinematic Studio Photography Portfolio Website"
                         class="project-image" style="object-fit: cover;">
                     <div class="project-info">
@@ -1579,7 +1596,7 @@
                         <p class="project-description">Portfolio website for SR Cinematic Studio showcasing their
                             photography and videography work.</p>
                     </div>
-                </div>
+                </a>
 
             </div>
         </section>
@@ -1739,9 +1756,7 @@
         <div class="cta-banner reveal">
             <h3 class="cta-banner-title">Ready to Launch Your Online Presence?</h3>
             <p class="cta-banner-subtitle">Join 2 successful startups that have partnered with ScoDe360</p>
-            <button class="btn-primary"
-                onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Get Your Free
-                Consultation</button>
+            <a href="#contact" class="btn-primary">Get Your Free Consultation</a>
         </div>
 
         <!-- Contact Section -->
@@ -1898,9 +1913,15 @@
             });
         }
 
-        function toggleMobileMenu() {
+        function toggleMobileMenu(e) {
+            // If called from event listener, stop propagation
+            if (e) e.stopPropagation();
+
             const btn = document.querySelector('.mobile-menu-btn');
             const nav = document.getElementById('mobile-nav');
+
+            if (!btn || !nav) return;
+
             btn.classList.toggle('active');
             nav.classList.toggle('active');
 
@@ -1912,14 +1933,16 @@
             }
         }
 
+
+
         function closeModal() {
             const modal = document.getElementById('success-modal');
             modal.classList.remove('active');
         }
 
         /* =========================================
-           PARTICLE BACKGROUND ANIMATION
-           ========================================= */
+            PARTICLE BACKGROUND ANIMATION
+            ========================================= */
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -2001,6 +2024,33 @@
         // Initialize Animation
         resizeCanvas();
         animateParticles();
+
+        /* =========================================
+           MOBILE MENU HANDLER
+           ========================================= */
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.getElementById('mobile-nav');
+
+        // Use addEventListener for better reliability
+        if (menuBtn) {
+            menuBtn.addEventListener('click', toggleMobileMenu);
+            // Also ensure touchstart works immediately without delay
+            menuBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent double firing with click
+                toggleMobileMenu();
+            }, { passive: false });
+        }
+
+        // Close menu when clicking links
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const btn = document.querySelector('.mobile-menu-btn');
+                const nav = document.getElementById('mobile-nav');
+                if (nav.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
 
         /* =========================================
            FORM HANDLER

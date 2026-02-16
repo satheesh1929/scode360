@@ -170,6 +170,13 @@
             box-sizing: border-box;
         }
 
+        button,
+        a,
+        input[type="submit"] {
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
         body,
         html {
             width: 100%;
@@ -1218,76 +1225,178 @@
         /* =========================================
            RESPONSIVE
            ========================================= */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
+        /* ... previous CSS ... */
 
-            .hero {
-                padding: 6rem 1.5rem 2rem 1.5rem;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .btn-primary,
-            .btn-secondary {
-                width: 100%;
-            }
-
-            .footer-content {
-                text-align: center;
-            }
-        }
-
-        /* Install App Button */
-        .install-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        /* =========================================
+           MOBILE MENU STYLES
+           ========================================= */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
             cursor: pointer;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
+            z-index: 1002;
+        }
+
+        /* ... (bars) ... */
+        .mobile-menu-btn .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 3px;
             transition: all 0.3s ease;
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .install-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
-            background: var(--accent-light);
+        /* Mobile Menu Active State (Hamburger to X) */
+        .mobile-menu-btn.active .bar:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
         }
 
-        .install-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
+        .mobile-menu-btn.active .bar:nth-child(2) {
+            opacity: 0;
         }
 
-        @keyframes slideUp {
+        .mobile-menu-btn.active .bar:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* Mobile Nav Container */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav li {
+            margin: 1.5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav.active li {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        /* Stagger animation for menu items */
+        .mobile-nav.active li:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .mobile-nav.active li:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .mobile-nav.active li:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .mobile-nav.active li:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .mobile-nav.active li:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .mobile-nav.active li:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .mobile-nav a {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* =========================================
+           SCROLL ANIMATIONS
+           ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered Children */
+        .stagger-parent .service-card,
+        .stagger-parent .project-card,
+        .stagger-parent .feature-card,
+        .stagger-parent .testimonial-card,
+        .stagger-parent .resource-card,
+        .stagger-parent .stat-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .stagger-parent.active .service-card,
+        .stagger-parent.active .project-card,
+        .stagger-parent.active .feature-card,
+        .stagger-parent.active .testimonial-card,
+        .stagger-parent.active .resource-card,
+        .stagger-parent.active .stat-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delays */
+        .stagger-parent.active>*:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .stagger-parent.active>*:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+
+        .stagger-parent.active>*:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .stagger-parent.active>*:nth-child(4) {
+            transition-delay: 0.4s;
+        }
+
+        .stagger-parent.active>*:nth-child(5) {
+            transition-delay: 0.5s;
+        }
+
+        .stagger-parent.active>*:nth-child(6) {
+            transition-delay: 0.6s;
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -1300,9 +1409,23 @@
         }
 
         @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                /* Hide standard nav on mobile */
+            }
+
+            .cta-button {
+                display: none;
+                /* Hide header CTA on mobile to prevent overcrowding */
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                /* Show hamburger on mobile */
+            }
+
             .install-btn {
                 bottom: 80px;
-                /* Above potential bottom nav or just higher */
                 right: 50%;
                 transform: translateX(50%);
                 width: auto;
@@ -1338,7 +1461,27 @@
         </nav>
         <button class="cta-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Get
             Started</button>
+
+        <!-- Mobile Menu Button -->
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <ul>
+            <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
+            <li><a href="#portfolio" onclick="toggleMobileMenu()">Portfolio</a></li>
+            <li><a href="#why" onclick="toggleMobileMenu()">Why Us</a></li>
+            <li><a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a></li>
+            <li><a href="#resources" onclick="toggleMobileMenu()">Resources</a></li>
+            <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
+            <li><a href="#contact" onclick="toggleMobileMenu()" style="color: var(--accent-color);">Get Started</a></li>
+        </ul>
+    </div>
 
     <div class="main-content">
         <!-- Hero Section -->
@@ -1365,10 +1508,11 @@
 
         <!-- Services Section -->
         <section id="services" class="services">
-            <h2 class="section-title">ScoDe360 Services</h2>
-            <p class="section-subtitle">Affordable web development, design, and digital solutions tailored for startups
+            <h2 class="section-title reveal">ScoDe360 Services</h2>
+            <p class="section-subtitle reveal">Affordable web development, design, and digital solutions tailored for
+                startups
             </p>
-            <div class="services-grid">
+            <div class="services-grid stagger-parent">
                 <div class="service-card">
                     <div class="service-icon">💻</div>
                     <h3 class="service-title">Website Development</h3>
@@ -1381,44 +1525,39 @@
                     <h3 class="service-title">Logo & Branding Design</h3>
                     <p class="service-description">Custom logo design and complete branding packages. Professional logo
                         creation at affordable prices for startups</p>
-                    <div class="price-tag"></div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🎥</div>
                     <h3 class="service-title">Professional Video Editing</h3>
                     <p class="service-description">Professional video editing for marketing, social media, and
                         promotion. Quality video production at startup prices</p>
-                    <div class="price-tag"></div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">📱</div>
                     <h3 class="service-title">Mobile Optimization</h3>
                     <p class="service-description">Fully responsive designs that work perfectly on all devices.
                         SEO-friendly responsive web design</p>
-                    <div class="price-tag"></div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🔍</div>
                     <h3 class="service-title">SEO Optimization</h3>
                     <p class="service-description">Get found on Google with our SEO-friendly website solutions. Search
                         engine optimization for startups</p>
-                    <div class="price-tag"></div>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🚀</div>
                     <h3 class="service-title">Launch & Support</h3>
                     <p class="service-description">Full deployment, testing, and ongoing technical support for 3 months.
                         Complete website launch service</p>
-                    <div class="price-tag"></div>
                 </div>
             </div>
         </section>
 
         <!-- Portfolio Section -->
         <section id="portfolio" class="portfolio">
-            <h2 class="section-title">ScoDe360 Portfolio</h2>
-            <p class="section-subtitle">Showcase of successful projects we've delivered for startups</p>
-            <div class="portfolio-grid">
+            <h2 class="section-title reveal">ScoDe360 Portfolio</h2>
+            <p class="section-subtitle reveal">Showcase of successful projects we've delivered for startups</p>
+            <div class="portfolio-grid stagger-parent">
                 <!-- Project 1 -->
                 <div class="project-card" onclick="window.open('https://mugavarithazhai.in', '_blank')">
                     <img src="assets/mugavarithazhai.png" alt="Mugavari Thazhai Web Development Project"
@@ -1447,9 +1586,9 @@
 
         <!-- Why Choose Us Section -->
         <section id="why" class="why-choose">
-            <h2 class="section-title">Why Choose ScoDe360</h2>
-            <p class="section-subtitle">What makes ScoDe360 the perfect partner for your startup</p>
-            <div class="why-grid">
+            <h2 class="section-title reveal">Why Choose ScoDe360</h2>
+            <p class="section-subtitle reveal">What makes ScoDe360 the perfect partner for your startup</p>
+            <div class="why-grid stagger-parent">
                 <div class="feature-card">
                     <div class="feature-number">✓</div>
                     <h3 class="feature-title">Affordable Pricing</h3>
@@ -1485,9 +1624,9 @@
 
         <!-- Stats Section -->
         <section class="stats">
-            <h2 class="section-title">ScoDe360 Impact</h2>
-            <p class="section-subtitle">Real numbers that showcase our success</p>
-            <div class="stats-grid">
+            <h2 class="section-title reveal">ScoDe360 Impact</h2>
+            <p class="section-subtitle reveal">Real numbers that showcase our success</p>
+            <div class="stats-grid stagger-parent">
                 <div class="stat-card">
                     <div class="stat-number">2</div>
                     <div class="stat-label">Projects Delivered</div>
@@ -1505,9 +1644,9 @@
 
         <!-- Testimonials Section -->
         <section id="testimonials" class="testimonials">
-            <h2 class="section-title">Reviews for ScoDe360</h2>
-            <p class="section-subtitle">Real feedback from satisfied startups and businesses</p>
-            <div class="testimonials-grid">
+            <h2 class="section-title reveal">Reviews for ScoDe360</h2>
+            <p class="section-subtitle reveal">Real feedback from satisfied startups and businesses</p>
+            <div class="testimonials-grid stagger-parent">
                 <!-- Testimonial 1 -->
                 <div class="testimonial-card">
                     <div class="stars">★★★★★</div>
@@ -1539,9 +1678,9 @@
         </section>
 
         <!-- Trust Section -->
-        <section class="trust-section">
+        <section class="trust-section reveal">
             <h3 class="section-subtitle">Why Startups Trust ScoDe360</h3>
-            <div class="trust-badges">
+            <div class="trust-badges stagger-parent">
                 <div class="badge">
                     <span class="badge-icon">✓</span>
                     <span>100% Satisfaction Guarantee</span>
@@ -1563,9 +1702,9 @@
 
         <!-- Resources & Insights Section (New) -->
         <section id="resources" class="resources">
-            <h2 class="section-title">Resources & Insights</h2>
-            <p class="section-subtitle">Latest tips and trends for startup growth</p>
-            <div class="resource-grid">
+            <h2 class="section-title reveal">Resources & Insights</h2>
+            <p class="section-subtitle reveal">Latest tips and trends for startup growth</p>
+            <div class="resource-grid stagger-parent">
                 <div class="resource-card">
                     <div class="resource-content">
                         <span class="resource-tag">Web Design</span>
@@ -1597,7 +1736,7 @@
         </section>
 
         <!-- CTA Banner -->
-        <div class="cta-banner">
+        <div class="cta-banner reveal">
             <h3 class="cta-banner-title">Ready to Launch Your Online Presence?</h3>
             <p class="cta-banner-subtitle">Join 2 successful startups that have partnered with ScoDe360</p>
             <button class="btn-primary"
@@ -1607,7 +1746,7 @@
 
         <!-- Contact Section -->
         <section id="contact" class="contact">
-            <div class="contact-content">
+            <div class="contact-content reveal">
                 <h2 class="section-title">Start Your Project with ScoDe360</h2>
                 <p class="section-subtitle">Let's build something amazing for your startup</p>
                 <form class="contact-form" onsubmit="handleSubmit(event)">
@@ -1732,7 +1871,46 @@
             setTimeout(() => {
                 loader.classList.add('loader-hidden');
             }, 1500);
+
+            // Initial call to setup animations once loaded
+            setupAnimations();
         });
+
+        function setupAnimations() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once active
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal, .stagger-parent').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function toggleMobileMenu() {
+            const btn = document.querySelector('.mobile-menu-btn');
+            const nav = document.getElementById('mobile-nav');
+            btn.classList.toggle('active');
+            nav.classList.toggle('active');
+
+            // Prevent scrolling when menu is open
+            if (nav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
 
         function closeModal() {
             const modal = document.getElementById('success-modal');

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scode360-v2';
+const CACHE_NAME = 'scode360-v3';
 const urlsToCache = [
     './',
     './index.html',

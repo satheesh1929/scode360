@@ -142,7 +142,7 @@
     </script>
 
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
+    <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
@@ -1850,7 +1850,7 @@
 
             if (WEB_APP_URL === "REPLACE_WITH_YOUR_WEB_APP_URL" || WEB_APP_URL === "") {
                 alert("Error: The contact form has not been connected to the backend yet.");
-                console.error("Please deploy the Google Apps Script and paste the URL in index.html line 1255.");
+                console.error("Please deploy the Google Apps Script and paste the URL in index.html line 1830.");
                 return;
             }
 
@@ -1910,8 +1910,13 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
-                if (href !== '#' && document.querySelector(href)) {
-                    e.preventDefault();
+                e.preventDefault();
+                if (href === '#') {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else if (document.querySelector(href)) {
                     document.querySelector(href).scrollIntoView({
                         behavior: 'smooth'
                     });

@@ -1236,6 +1236,37 @@
 
         /* ... previous CSS ... */
 
+        /* Install App Button */
+        .install-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            border: none;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            display: none;
+            /* hidden by default, shown via JS */
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 999;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+        }
+
+        .install-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .install-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
         /* =========================================
            MOBILE MENU STYLES
            ========================================= */
@@ -1426,15 +1457,15 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .nav-menu {
                 display: none;
-                /* Hide standard nav on mobile */
+                /* Hide standard nav on mobile/tablet */
             }
 
             .cta-button {
                 display: none;
-                /* Hide header CTA on mobile to prevent overcrowding */
+                /* Hide header CTA on mobile/tablet */
             }
 
             .mobile-menu-btn {
@@ -1480,7 +1511,7 @@
         <a href="#contact" class="cta-button">Get Started</a>
 
         <!-- Mobile Menu Button -->
-        <div class="mobile-menu-btn" onclick="toggleMobileMenu(event)">
+        <div class="mobile-menu-btn">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
@@ -1492,13 +1523,13 @@
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav" id="mobile-nav">
         <ul>
-            <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
-            <li><a href="#portfolio" onclick="toggleMobileMenu()">Portfolio</a></li>
-            <li><a href="#why" onclick="toggleMobileMenu()">Why Us</a></li>
-            <li><a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a></li>
-            <li><a href="#resources" onclick="toggleMobileMenu()">Resources</a></li>
-            <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
-            <li><a href="#contact" onclick="toggleMobileMenu()" style="color: var(--accent-color);">Get Started</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#why">Why Us</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact" style="color: var(--accent-color);">Get Started</a></li>
         </ul>
     </div>
 
@@ -2048,6 +2079,29 @@
                 const nav = document.getElementById('mobile-nav');
                 if (nav.classList.contains('active')) {
                     toggleMobileMenu();
+                }
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const nav = document.getElementById('mobile-nav');
+            const btn = document.querySelector('.mobile-menu-btn');
+            if (nav && nav.classList.contains('active') && !nav.contains(e.target) && !btn.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Make Service Cards Interactive
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const serviceTitle = card.querySelector('.service-title').innerText;
+                const serviceInput = document.getElementById('service');
+                const contactSection = document.getElementById('contact');
+
+                if (serviceInput && contactSection) {
+                    serviceInput.value = serviceTitle;
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });

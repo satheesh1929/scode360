@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scode360-v4';
+const CACHE_NAME = 'scode360-v5';
 const urlsToCache = [
     './',
     './index.html',
@@ -37,13 +37,20 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(response => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
+                // Save a network response in cache
+                if (response && response.status === 200 && response.type === 'basic') {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
                 }
-                return fetch(event.request);
+                return response;
+            })
+            .catch(() => {
+                // If network fails (offline), fall back to cache
+                return caches.match(event.request);
             })
     );
 });
